@@ -16,6 +16,8 @@ Plug 'mattn/emmet-vim'
 Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'morhetz/gruvbox'
+Plug 'sonph/onehalf'
+Plug 'joshdick/onedark.vim'
 
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 
@@ -79,7 +81,7 @@ set shiftwidth=2
 " always uses spaces instead of tab characters
 set expandtab
 
-colorscheme gruvbox
+colorscheme onedark
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active

@@ -26,6 +26,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/limelight.vim'
 Plug 'morhetz/gruvbox'
 Plug 'cseelus/vim-colors-lucid'
+Plug 'wojciechkepka/bogster'
 
 " functionality
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -56,13 +57,15 @@ call plug#end()
 " Themes
 " set background=dark
 " colorscheme palenight
-autocmd vimenter * ++nested colorscheme lucid
-" let g:airline_theme = "palenight"
+autocmd vimenter * ++nested colorscheme bogster
+let g:airline_theme = "bogster"
 set number relativenumber
 set expandtab
 set shiftwidth=4
 
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=0 
+autocmd Filetype typescript setlocal ts=2 sw=2 sts=0 
+autocmd Filetype scss setlocal ts=2 sw=2 sts=0 
 
 let g:prettier#autoformat = 1
 let g:prettier#autoformat_require_pragma = 0
@@ -344,3 +347,9 @@ let g:closetag_shortcut = '>'
 " Add > at current position without closing the current tag, default is ''
 "
 let g:closetag_close_shortcut = '<leader>>'
+
+" ctrlp show hidden files
+let g:ctrlp_show_hidden = 1
+
+" clipboard connect system
+set clipboard+=unnamedplus

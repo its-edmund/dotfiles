@@ -23,8 +23,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
-Plug 'junegunn/limelight.vim'
-Plug 'morhetz/gruvbox'
+Plug 'sainnhe/everforest'
+Plug 'arcticicestudio/nord-vim'
 Plug 'cseelus/vim-colors-lucid'
 
 " functionality
@@ -55,8 +55,8 @@ call plug#end()
 
 " Themes
 " set background=dark
-" colorscheme palenight
-autocmd vimenter * ++nested colorscheme lucid
+colorscheme nord
+" autocmd vimenter * ++nested colorscheme forest-night
 " let g:airline_theme = "palenight"
 set number relativenumber
 set expandtab
@@ -344,3 +344,9 @@ let g:closetag_shortcut = '>'
 " Add > at current position without closing the current tag, default is ''
 "
 let g:closetag_close_shortcut = '<leader>>'
+
+" Airline config
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+set t_Co=256

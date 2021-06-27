@@ -105,6 +105,7 @@ alias v="nvim"
 alias init="nvim ~/.config/nvim/init.vim"
 alias zshrc="nvim ~/.zshrc"
 alias ci="code-insiders"
+alias tm='tmux attach'
 
 export PATH="~/bin:$PATH"
 

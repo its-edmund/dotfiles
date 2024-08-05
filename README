@@ -1,0 +1,5 @@
+# Dotfiles
+Symlink to config directory for the tool you want to set up:
+
+```bash
+ln -s ./nvim ~/.config/nvim

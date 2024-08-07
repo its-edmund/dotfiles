@@ -1,0 +1,22 @@
+[window]
+
+decorations = "None"
+
+[font]
+
+normal.family = "JetBrainsMono Nerd Font"
+bold.family = "JetBrainsMono Nerd Font"
+italic.family = "JetBrainsMono Nerd Font"
+bold_italic.family = "JetBrainsMono Nerd Font"
+
+[shell]
+program = "/bin/zsh"
+args = ["-l", "-c", "tmux attach || tmux"]
+
+[keyboard]
+bindings = [
+	{ key = "P", mods = "Control", action = "ReceiveChar" },
+	{ key = "N", mods = "Control", action = "ReceiveChar" },
+	{ key = "/", mods = "Alt", action = "None" }
+
+]

@@ -176,3 +176,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 alias maelstrom=~/maelstrom/maelstrom
+
+# Competitive programming shortcuts
+co() { g++-14 -std=c++17 -ld_classic -O2 -o "${1%.*}" $1 -Wall; }
+run() { co $1 && ./${1%.*} & fg; }

@@ -75,10 +75,8 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist,
                {desc = 'Open diagnostic [Q]uickfix list'})
 
 -- Buffer management
-vim.keymap.set('n', '<Leader>x', ':bd<CR>')
 vim.keymap.set('n', '<Tab>', ':bnext<CR>')
 vim.keymap.set('n', '<S-Tab>', ':bprev<CR>')
-vim.keymap.set('n', '<Leader>x', ':bd<CR>', {noremap = true, silent = true})
 vim.keymap.set('n', '<Tab>', ':bnext<CR>', {noremap = true, silent = true})
 vim.keymap.set('n', '<S-Tab>', ':bprev<CR>', {noremap = true, silent = true})
 
@@ -144,7 +142,46 @@ require('lazy').setup({
         --   config = bar
         --   end,
     }, {"catppuccin/nvim", name = "catppuccin", priority = 1000},
-    "tpope/vim-fugitive", "lewis6991/gitsigns.nvim"
+    "tpope/vim-fugitive", "lewis6991/gitsigns.nvim", {
+        "neovim/nvim-lspconfig",
+        config = function() require'lspconfig'.clangd.setup {} end
+    }, {
+        "mhartington/formatter.nvim",
+        config = function() require("plugins.formatter") end
+    }, {
+        "echasnovski/mini.bufremove",
+
+        keys = {
+            {
+                "<C-x>",
+                function()
+                    local bd = require("mini.bufremove").delete
+                    if vim.bo.modified then
+                        local choice = vim.fn.confirm(
+                                           ("Save changes to %q?"):format(vim.fn
+                                                                              .bufname()),
+                                           "&Yes\n&No\n&Cancel")
+                        if choice == 1 then -- Yes
+                            vim.cmd.write()
+                            bd(0)
+                        elseif choice == 2 then -- No
+                            bd(0, true)
+                        end
+                    else
+                        bd(0)
+                    end
+                end,
+                desc = "Delete Buffer"
+            }, -- stylua: ignore
+            {
+                "<leader>bD",
+                function()
+                    require("mini.bufremove").delete(0, true)
+                end,
+                desc = "Delete Buffer (Force)"
+            }
+        }
+    }
 })
 
 vim.opt.termguicolors = true

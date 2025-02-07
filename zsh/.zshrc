@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS:~/.yarn/bin"
+export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS:~/.yarn/bin:$HOME/.config/emacs/bin"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -177,6 +177,8 @@ export NVM_DIR="$HOME/.nvm"
 
 alias maelstrom=~/maelstrom/maelstrom
 
-# Competitive programming shortcuts
-co() { g++-14 -std=c++17 -ld_classic -O2 -o "${1%.*}" $1 -Wall; }
-run() { co $1 && ./${1%.*} & fg; }
+# Alias to compile and run a C++ file
+alias run='f() { g++-14 -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "${1%.*}" "$1" && time ./"${1%.*}" && rm ./"${1%.*}"; }; f'
+fpath+=(~/.zsh/completions)
+autoload -U compinit && compinit
+

@@ -40,7 +40,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/dev/notes-org-roam")
+(setq org-directory "~/dev/notes")
 (setq org-agenda-files
       (directory-files-recursively
         org-directory
@@ -98,6 +98,11 @@
              :config
              (setq org-ellipsis " ▾"
                    org-hide-emphasis-markers t))
+
+(use-package! org-ql
+              :after org
+              :config
+              (require 'org-ql))
 
 (use-package org-bullets
              :after org
@@ -191,3 +196,32 @@
       (lambda (node)
         (let ((size (my/org-roam-get-recursive-child-count (org-roam-node-id node))))
           (max 5 (* 2 size))))) ;; Prevents tiny nodes
+
+; (use-package! org-super-agenda
+;               :after org-agenda
+;               :config
+;               (setq org-super-agenda-groups
+;                     '(
+;                       ;; Today's tasks with time grid
+;                       (:name "Today"
+;                              :time-grid t
+;                              :scheduled today
+;                              :deadline today
+;                              :order 1)
+;
+;                       ;; Upcoming scheduled items with dates
+;                       (:name "Scheduled"
+;                              :scheduled future
+;                              :time-grid t
+;                              :order 2)
+;                       ))
+;
+;               ;; Enable time grid in agenda
+;               (setq org-agenda-use-time-grid t
+;                     org-agenda-time-grid
+;                     '((daily today require-timed)
+;                       (800 1000 1200 1400 1600 1800 2000)
+;                       "......"
+;                       "----------------"))
+;
+;               (org-super-agenda-mode))

@@ -51,3 +51,5 @@
 (unpin! org-roam)
 (package! org-roam-ui)
 (package! org-bullets)
+(package! org-super-agenda)
+(package! org-ql)

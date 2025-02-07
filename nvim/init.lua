@@ -93,6 +93,8 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>',
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>',
                {desc = 'Move focus to the upper window'})
 
+vim.keymap.set('n', '<C-c>', ':%yank +<CR>', {noremap = true, silent = true})
+
 -- Switch between header and source
 vim.keymap.set('n', '<Leader>s', ':lua SwitchSourceHeader()<CR>',
                {noremap = true, silent = true})
@@ -107,50 +109,42 @@ vim.keymap.set('n', '<Leader>a', ':Ag<Space>', {noremap = true, silent = false})
 vim.keymap.set('n', 'gd', ":execute 'Ag ' .. expand('<cword>')<CR>",
                {noremap = true, silent = false})
 vim.api.nvim_create_user_command('Ag', function(opts)
-  vim.fn['fzf#vim#ag'](opts.args, '-U --color-path="0;33" --literal', opts.bang)
-end, { bang = true, nargs = '*' })
+    vim.fn['fzf#vim#ag'](opts.args, '-U --color-path="0;33" --literal',
+                         opts.bang)
+end, {bang = true, nargs = '*'})
 
 -- System clipboard shortcut
 vim.keymap.set('n', '<Leader>y', '"+y', {noremap = true, silent = true})
 vim.keymap.set('n', '<Leader>p', '"+p', {noremap = true, silent = true})
 
 require('lazy').setup({
-    'sbdchd/neoformat',
-    'junegunn/fzf',
-    'junegunn/fzf.vim',
-	'junegunn/vim-peekaboo',
-    'octol/vim-cpp-enhanced-highlight',
-	'nvim-tree/nvim-tree.lua',
-	'mileszs/ack.vim',
+    'sbdchd/neoformat', 'junegunn/fzf', 'junegunn/fzf.vim',
+    'junegunn/vim-peekaboo', 'octol/vim-cpp-enhanced-highlight',
+    'nvim-tree/nvim-tree.lua', 'mileszs/ack.vim',
     {"miikanissi/modus-themes.nvim", priority = 1000},
     'rafi/awesome-vim-colorschemes', 'rebelot/kanagawa.nvim',
     {"zenbones-theme/zenbones.nvim", dependencies = "rktjmp/lush.nvim"},
     'vim-scripts/vcbc.vim', 'rodnaph/vim-color-schemes',
-	{ 'echasnovski/mini.nvim', version = false },
-	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		dependencies = { "nvim-lua/plenary.nvim" }
-	},
-	{
-		"karb94/neoscroll.nvim",
-		config = function ()
-			require('neoscroll').setup({
+    {'echasnovski/mini.nvim', version = false}, {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = {"nvim-lua/plenary.nvim"}
+    }, {
+        "karb94/neoscroll.nvim",
+        config = function()
+            require('neoscroll').setup({
                 performance_mode = true,
                 easing = 'sine'
             })
-		end
-	},
-	{ 
-		"nyoom-engineering/oxocarbon.nvim"
-		-- Add in any other configuration; 
-		--   event = foo, 
-		--   config = bar
-		--   end,
-	},
-	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-    "tpope/vim-fugitive",
-    "lewis6991/gitsigns.nvim"
+        end
+    }, {
+        "nyoom-engineering/oxocarbon.nvim"
+        -- Add in any other configuration; 
+        --   event = foo, 
+        --   config = bar
+        --   end,
+    }, {"catppuccin/nvim", name = "catppuccin", priority = 1000},
+    "tpope/vim-fugitive", "lewis6991/gitsigns.nvim"
 })
 
 vim.opt.termguicolors = true
@@ -218,6 +212,10 @@ vim.g.neoformat_basic_format_retab = 1
 vim.g.neoformat_basic_format_trim = 1
 -- Trigger neoformat on <leader>=
 vim.keymap.set('n', '<leader>=', ':Neoformat<CR>')
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*", -- You can specify filetypes here, e.g., "*.js"
+    callback = function() vim.cmd("Neoformat") end
+})
 
 -- Mini.nvim configuration
 require('mini.basics').setup()
@@ -227,26 +225,26 @@ require('mini.tabline').setup()
 require('mini.pairs').setup()
 require('mini.starter').setup()
 require('mini.move').setup({
-	-- Module mappings. Use `''` (empty string) to disable one.
-	mappings = {
-		-- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
-		left  = 'H',
-		right = 'L',
-		down  = 'J',
-		up    = 'K',
+    -- Module mappings. Use `''` (empty string) to disable one.
+    mappings = {
+        -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
+        left = 'H',
+        right = 'L',
+        down = 'J',
+        up = 'K',
 
-		-- Move current line in Normal mode
-		line_left = '<M-h>',
-		line_right = '<M-l>',
-		line_down = '<M-j>',
-		line_up = '<M-k>',
-	},
+        -- Move current line in Normal mode
+        line_left = '<M-h>',
+        line_right = '<M-l>',
+        line_down = '<M-j>',
+        line_up = '<M-k>'
+    },
 
-	-- Options which control moving behavior
-	options = {
-		-- Automatically reindent selection during linewise vertical move
-		reindent_linewise = true,
-	},
+    -- Options which control moving behavior
+    options = {
+        -- Automatically reindent selection during linewise vertical move
+        reindent_linewise = true
+    }
 })
 require('mini.hipatterns').setup()
 
@@ -255,7 +253,8 @@ local harpoon = require('harpoon')
 harpoon:setup()
 
 vim.keymap.set("n", "<leader>e", function() harpoon:list():add() end)
-vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+vim.keymap.set("n", "<C-e>",
+               function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
 vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
 vim.keymap.set("n", "<C-j>", function() harpoon:list():select(2) end)

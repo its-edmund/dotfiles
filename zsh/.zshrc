@@ -182,3 +182,4 @@ alias run='f() { g++-14 -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-
 fpath+=(~/.zsh/completions)
 autoload -U compinit && compinit
 
+alias emacs="emacs -nw"

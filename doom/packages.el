@@ -53,3 +53,5 @@
 (package! org-bullets)
 (package! org-super-agenda)
 (package! org-ql)
+(package! calfw)
+(package! calfw-org)

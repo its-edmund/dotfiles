@@ -225,7 +225,11 @@
          "** TODO %?\n")
         ("e" "Event" entry (file+headline "~/dev/notes/events.org" "Events")
          "** EVENT %?\n"
-         )))
+         )
+        ("h" "Habit" entry (file+headline "~/dev/notes/habits.org" "Habits")
+         "** TODO %?\nSCHEDULED: <%<%Y-%m-%d %a .+1d>>\n:PROPERTIES:\n:CREATED: %U\n:STYLE: habit\n::END:"
+         )
+        ))
 
 ; (use-package! org-super-agenda
 ;               :after org-agenda
@@ -255,3 +259,19 @@
 ;                       "----------------"))
 ;
 ;               (org-super-agenda-mode))
+
+(use-package! calfw
+              :commands (cfw:open-org-calendar)
+              :config
+              (use-package! calfw-org
+                            :config
+                            (setq cfw:org-agenda-schedule-args '(:timestamp))
+                            ;; Optional: Customize the calendar appearance
+                            (setq cfw:fchar-junction ?╋
+                                  cfw:fchar-vertical-line ?┃
+                                  cfw:fchar-horizontal-line ?━
+                                  cfw:fchar-left-junction ?┣
+                                  cfw:fchar-right-junction ?┫
+                                  cfw:fchar-top-junction ?┯
+                                  cfw:fchar-top-left-corner ?┏
+                                  cfw:fchar-top-right-corner ?┓)))

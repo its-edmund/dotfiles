@@ -265,7 +265,6 @@
               :config
               (use-package! calfw-org
                             :config
-                            (setq cfw:org-agenda-schedule-args '(:timestamp))
                             ;; Optional: Customize the calendar appearance
                             (setq cfw:fchar-junction ?╋
                                   cfw:fchar-vertical-line ?┃

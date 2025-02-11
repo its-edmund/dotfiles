@@ -47,8 +47,6 @@
         "\\.org$"
         :include-hidden t))
 
-(setq org-todo-keywords '((sequence "TODO(t)" "DOING(p)" "|" "DONE(d)")))
-
 (require 'org)
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
@@ -137,6 +135,7 @@
                     ("C-c n g" . org-roam-graph)
                     ("C-c n i" . org-roam-node-insert)
                     ("C-c a" . org-agenda)
+                    ("C-c c" . org-capture)
                     :map org-mode-map
                     ("C-M-i" . completion-at-point)
                     :map org-roam-dailies-map
@@ -208,6 +207,25 @@
                   ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
                    (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                    (org-agenda-span 'week)))))))
+
+(setq org-todo-keywords '(
+                          (sequence "TODO(t)" "DOING(p)" "|" "DONE(d)")
+                          (sequence "EVENT(e)" "|" "DONE(d)" "CANCELLED(c)")
+                          ))
+
+(setq org-todo-keyword-faces
+      '(("TODO" . (:foreground "#ff39a3" :weight bold))
+        ("STARTED" . "#E35DBF")
+        ("CANCELLED" . (:foreground "white" :background "#4d4d4d" :weight bold))
+        ("DELEGATED" . "pink")
+        ("POSTPONED" . "#008080")))
+
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/dev/notes/todos.org" "Tasks")
+         "** TODO %?\n")
+        ("e" "Event" entry (file+headline "~/dev/notes/events.org" "Events")
+         "** EVENT %?\n"
+         )))
 
 ; (use-package! org-super-agenda
 ;               :after org-agenda

@@ -5,6 +5,8 @@ export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS:~/.yarn/bin:$HOME/.c
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+export HOMEBREW_EDITOR=nvim
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -183,3 +185,11 @@ fpath+=(~/.zsh/completions)
 autoload -U compinit && compinit
 
 alias emacs="emacs -nw"
+
+# pnpm
+export PNPM_HOME="/Users/edmundxin/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

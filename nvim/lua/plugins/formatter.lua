@@ -5,7 +5,7 @@ local util = require "formatter.util"
 -- Configure formatter
 formatter.setup({
     logging = true,
-    log_level = vim.log.levels.WARN,
+    log_level = vim.log.levels.DEBUG,
     filetype = {
         lua = {
             -- lua-format

@@ -266,6 +266,7 @@
               (use-package! calfw-org
                             :config
                             ;; Optional: Customize the calendar appearance
+                            (setq cfw:org-overwrite-default-keybinding t)
                             (setq cfw:fchar-junction ?╋
                                   cfw:fchar-vertical-line ?┃
                                   cfw:fchar-horizontal-line ?━

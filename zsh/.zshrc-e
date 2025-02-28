@@ -202,5 +202,3 @@ esac
 # This section can be safely removed at any time if needed.
 [[ ! -r '/Users/bytedance/.opam/opam-init/init.zsh' ]] || source '/Users/bytedance/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
-
-[ -f "/Users/bytedance/.ghcup/env" ] && . "/Users/bytedance/.ghcup/env" # ghcup-env

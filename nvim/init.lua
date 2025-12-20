@@ -70,6 +70,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Prevent newline from comment to continue to comment
+vim.opt.formatoptions:remove({"c", "r", "o"})
+
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist,
                {desc = 'Open diagnostic [Q]uickfix list'})
@@ -115,11 +118,14 @@ end, {bang = true, nargs = '*'})
 vim.keymap.set('n', '<Leader>y', '"+y', {noremap = true, silent = true})
 vim.keymap.set('n', '<Leader>p', '"+p', {noremap = true, silent = true})
 
+-- Handle bits/stdc++.h
+vim.filetype.add({pattern = {[".*/bits/stdc%+%+%.h"] = "cpp"}})
+
 require('lazy').setup({
-    'sbdchd/neoformat', 'junegunn/fzf', 'junegunn/fzf.vim',
-    'junegunn/vim-peekaboo', 'octol/vim-cpp-enhanced-highlight',
-    'nvim-tree/nvim-tree.lua', 'mileszs/ack.vim',
-    {"miikanissi/modus-themes.nvim", priority = 1000},
+    'vv9k/bogster', 'EdenEast/nightfox.nvim', 'sbdchd/neoformat',
+    'junegunn/fzf', 'junegunn/fzf.vim', 'junegunn/vim-peekaboo',
+    'octol/vim-cpp-enhanced-highlight', 'nvim-tree/nvim-tree.lua',
+    'mileszs/ack.vim', {"miikanissi/modus-themes.nvim", priority = 1000},
     'rafi/awesome-vim-colorschemes', 'rebelot/kanagawa.nvim',
     {"zenbones-theme/zenbones.nvim", dependencies = "rktjmp/lush.nvim"},
     'vim-scripts/vcbc.vim', 'rodnaph/vim-color-schemes',
@@ -142,10 +148,9 @@ require('lazy').setup({
         --   config = bar
         --   end,
     }, {"catppuccin/nvim", name = "catppuccin", priority = 1000},
-    "tpope/vim-fugitive", "lewis6991/gitsigns.nvim", {
-        "neovim/nvim-lspconfig",
-        config = function() require'lspconfig'.clangd.setup {} end
-    }, {
+    "tpope/vim-fugitive", "lewis6991/gitsigns.nvim",
+    {"neovim/nvim-lspconfig", config = function() require("plugins.linter") end},
+    {
         "mhartington/formatter.nvim",
         config = function() require("plugins.formatter") end
     }, {
@@ -203,13 +208,15 @@ end
 local function set_theme()
     local theme = detect_system_theme()
 
-    if theme == "dark" then
-        vim.opt.background = "dark"
-        vim.cmd("colorscheme catppuccin-mocha") -- Replace with your preferred dark theme
-    else
-        vim.opt.background = "light"
-        vim.cmd("colorscheme white") -- Replace with your preferred light theme
-    end
+    vim.cmd("colorscheme bogster")
+
+    -- if theme == "dark" then
+    --     vim.opt.background = "dark"
+    --     vim.cmd("colorscheme catppuccin-mocha") -- Replace with your preferred dark theme
+    -- else
+    --     vim.opt.background = "light"
+    --     vim.cmd("colorscheme white") -- Replace with your preferred light theme
+    -- end
 end
 
 -- Apply the theme

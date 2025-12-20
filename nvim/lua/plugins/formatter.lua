@@ -33,7 +33,8 @@ formatter.setup({
                 return {
                     exe = "clang-format",
                     args = {
-                        "-assume-filename",
+                        "-style=\"{IndentWidth: 8, UseTab: Always, TabWidth: 8}\"",
+                        "--assume-filename",
                         util.escape_path(util.get_current_buffer_file_name())
                     },
                     stdin = true,

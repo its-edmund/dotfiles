@@ -179,15 +179,57 @@ export NVM_DIR="$HOME/.nvm"
 
 alias maelstrom=~/maelstrom/maelstrom
 
+# Generate competitive programming template
+export CP_CPP_TEMPLATE="$HOME/dev/competitive-programming/template.cpp"
+
+cpnew() {
+  # Usage: cpnew <filename> (e.g. cpnew a.cpp or cpnew main.cpp)
+  local name="$1"
+
+  if [[ -z "$name" ]]; then
+    echo "Usage: cpnew <filename.cpp>"
+    return 1
+  fi
+
+  # Decide target directory: CP_CPP_DIR if set, otherwise current dir
+  local dir="${CP_CPP_DIR:-$PWD}"
+
+  # Make sure directory exists
+  mkdir -p "$dir"
+
+  local target="$dir/$name"
+
+  if [[ -e "$target" ]]; then
+    echo "Error: $target already exists: $target"
+    return 1
+  fi
+
+  if [[ ! -f "$CP_CPP_TEMPLATE" ]]; then
+    echo "Error: template not found at \$CP_CPP_TEMPLATE = $CP_CPP_TEMPLATE"
+    return 1
+  fi
+
+  cp "$CP_CPP_TEMPLATE" "$target"
+  echo "Created: $target"
+
+  # Optionally open in your editor (uncomment one of these)
+  # nvim "$target"
+  # code "$target"
+}
+
+
 # Alias to compile and run a C++ file
-alias run='f() { g++-14 -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "${1%.*}" "$1" && time ./"${1%.*}" && rm ./"${1%.*}"; }; f'
+alias compile='f() { g++-14 -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "${1%.*}" "$1"; }; f'
+# alias run='f() { g++-14 -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "${1%.*}" "$1" && time ./"${1%.*}" && rm ./"${1%.*}"; }; f'
+alias run='f() { bin="${1%.*}"; g++-14 -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "$bin" "$1" && shift && time ./"$bin" "$@" && rm ./"$bin"; }; f'
+
 fpath+=(~/.zsh/completions)
 autoload -U compinit && compinit
 
 alias emacs="emacs -nw"
 
 # pnpm
-export PNPM_HOME="/Users/edmundxin/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -203,4 +245,14 @@ esac
 [[ ! -r '/Users/bytedance/.opam/opam-init/init.zsh' ]] || source '/Users/bytedance/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
 
-[ -f "/Users/bytedance/.ghcup/env" ] && . "/Users/bytedance/.ghcup/env" # ghcup-env
+[ -f "/Users/bytedance/.ghcup/env" ] && . "/Users/bytedance/.ghcup/env" # ghcup-envexport PATH=$HOME/.local/bin:$PATH
+
+
+# jvm setup
+
+JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home
+PATH=$JAVA_HOME/bin:$PATH:.
+CLASSPATH=$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar:.
+export JAVA_HOME
+export PATH
+export CLASSPATH

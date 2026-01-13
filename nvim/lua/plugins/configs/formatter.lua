@@ -1,4 +1,3 @@
--- lua/plugins/formatter.lua
 local formatter = require("formatter")
 local util = require "formatter.util"
 
@@ -43,6 +42,17 @@ formatter.setup({
             end
         }
     }
+})
+
+-- Formatting configuration
+vim.g.neoformat_basic_format_align = 1
+vim.g.neoformat_basic_format_retab = 1
+vim.g.neoformat_basic_format_trim = 1
+-- Trigger neoformat on <leader>=
+vim.keymap.set('n', '<leader>=', ':Neoformat<CR>')
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*", -- You can specify filetypes here, e.g., "*.js"
+    callback = function() vim.cmd("Neoformat") end
 })
 
 -- Optional: Define a command to run formatting easily

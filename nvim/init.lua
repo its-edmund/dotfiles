@@ -101,18 +101,20 @@ vim.keymap.set('n', '<Leader>s', ':lua SwitchSourceHeader()<CR>',
                {noremap = true, silent = true})
 
 -- fzf searching
-vim.keymap.set('n', '<Leader>f', ':Files<CR>', {noremap = true, silent = true})
-vim.keymap
-    .set('n', '<Leader>h', ':History<CR>', {noremap = true, silent = true})
-vim.keymap
-    .set('n', '<Leader>j', ':Buffers<CR>', {noremap = true, silent = true})
-vim.keymap.set('n', '<Leader>a', ':Ag<Space>', {noremap = true, silent = false})
-vim.keymap.set('n', 'gd', ":execute 'Ag ' .. expand('<cword>')<CR>",
-               {noremap = true, silent = false})
-vim.api.nvim_create_user_command('Ag', function(opts)
-    vim.fn['fzf#vim#ag'](opts.args, '-U --color-path="0;33" --literal',
-                         opts.bang)
-end, {bang = true, nargs = '*'})
+vim.keymap.set('n', '<Leader>f', ':Pick files<CR>',
+               {noremap = true, silent = true})
+-- vim.keymap.set('n', '<Leader>f', ':Files<CR>', {noremap = true, silent = true})
+-- vim.keymap
+--     .set('n', '<Leader>h', ':History<CR>', {noremap = true, silent = true})
+-- vim.keymap
+--     .set('n', '<Leader>j', ':Buffers<CR>', {noremap = true, silent = true})
+-- vim.keymap.set('n', '<Leader>a', ':Ag<Space>', {noremap = true, silent = false})
+-- vim.keymap.set('n', 'gd', ":execute 'Ag ' .. expand('<cword>')<CR>",
+--                {noremap = true, silent = false})
+-- vim.api.nvim_create_user_command('Ag', function(opts)
+--     vim.fn['fzf#vim#ag'](opts.args, '-U --color-path="0;33" --literal',
+--                          opts.bang)
+-- end, {bang = true, nargs = '*'})
 
 -- System clipboard shortcut
 vim.keymap.set('n', '<Leader>y', '"+y', {noremap = true, silent = true})
@@ -122,26 +124,40 @@ vim.keymap.set('n', '<Leader>p', '"+p', {noremap = true, silent = true})
 vim.filetype.add({pattern = {[".*/bits/stdc%+%+%.h"] = "cpp"}})
 
 require('lazy').setup({
-    'vv9k/bogster', 'EdenEast/nightfox.nvim', 'sbdchd/neoformat',
-    'junegunn/fzf', 'junegunn/fzf.vim', 'junegunn/vim-peekaboo',
-    'octol/vim-cpp-enhanced-highlight', 'nvim-tree/nvim-tree.lua',
-    'mileszs/ack.vim', {"miikanissi/modus-themes.nvim", priority = 1000},
+    {
+        "kawre/leetcode.nvim",
+        build = ":TSUpdate html", -- if you have `nvim-treesitter` installed
+        dependencies = {
+            -- include a picker of your choice, see picker section for more details
+            "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim"
+        },
+        opts = {
+            injector = {
+                ["cpp"] = {
+                    imports = function()
+                        return {
+                            "#include <bits/stdc++.h>", "using namespace std;"
+                        }
+                    end,
+                    after = "int main() {}"
+                }
+            },
+            image_support = false
+        }
+    }, 'MunifTanjim/nui.nvim', 'vv9k/bogster', 'EdenEast/nightfox.nvim',
+    'sbdchd/neoformat', 'junegunn/fzf', 'junegunn/fzf.vim',
+    'junegunn/vim-peekaboo', 'octol/vim-cpp-enhanced-highlight',
+    'nvim-tree/nvim-tree.lua', 'mileszs/ack.vim',
+    {"miikanissi/modus-themes.nvim", priority = 1000},
     'rafi/awesome-vim-colorschemes', 'rebelot/kanagawa.nvim',
     {"zenbones-theme/zenbones.nvim", dependencies = "rktjmp/lush.nvim"},
     'vim-scripts/vcbc.vim', 'rodnaph/vim-color-schemes',
-    {'echasnovski/mini.nvim', version = false}, {
+    {'nvim-treesitter/nvim-treesitter', lazy = false, build = ':TSUpdate'},
+    {'nvim-mini/mini.nvim', version = false}, {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
         dependencies = {"nvim-lua/plenary.nvim"}
-    }, {
-        "karb94/neoscroll.nvim",
-        config = function()
-            require('neoscroll').setup({
-                performance_mode = true,
-                easing = 'sine'
-            })
-        end
-    }, {
+    }, {"karb94/neoscroll.nvim", opt = {}}, {
         "nyoom-engineering/oxocarbon.nvim"
         -- Add in any other configuration; 
         --   event = foo, 
@@ -186,10 +202,25 @@ require('lazy').setup({
                 desc = "Delete Buffer (Force)"
             }
         }
+    }, {
+        "3rd/image.nvim",
+        build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
+        opts = {
+            processor = "magick_cli",
+            editor_only_render_when_focused = true,
+            window_overlap_clear_enabled = true, -- auto show/hide images when the editor gains/looses focus
+            tmux_show_only_in_active_window = true
+        }
     }
 })
 
 vim.opt.termguicolors = true
+
+-- Treesitter config
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = {'<filetype>'},
+    callback = function() vim.treesitter.start() end
+})
 
 -- Function to detect macOS system theme
 local function detect_system_theme()
@@ -291,6 +322,7 @@ require('mini.move').setup({
     }
 })
 require('mini.hipatterns').setup()
+require('mini.pick').setup()
 
 -- Harpoon configuration
 local harpoon = require('harpoon')

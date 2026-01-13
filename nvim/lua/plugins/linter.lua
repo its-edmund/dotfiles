@@ -1,7 +1,7 @@
 local lspconfig = require("lspconfig")
 local util = require("lspconfig.util")
 
-lspconfig.clangd.setup({
+vim.lsp.config('clangd', {
     cmd = {
         "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clangd",
         "--background-index", "--clang-tidy", "--query-driver=/usr/bin/clang"

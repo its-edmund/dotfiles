@@ -6,6 +6,8 @@ export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS:~/.yarn/bin:$HOME/.c
 export ZSH="$HOME/.oh-my-zsh"
 
 export HOMEBREW_EDITOR=nvim
+export ANTHROPIC_BASE_URL=https://pass.wafer.ai
+export ANTHROPIC_API_KEY=227b782ea3ea8985f41ad52f8ec788065fff9348747f1fd33960c09a8b7cf248
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -218,10 +220,18 @@ cpnew() {
 }
 
 
-# Alias to compile and run a C++ file
-alias compile='f() { g++-14 -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "${1%.*}" "$1"; }; f'
-# alias run='f() { g++-14 -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "${1%.*}" "$1" && time ./"${1%.*}" && rm ./"${1%.*}"; }; f'
-alias run='f() { bin="${1%.*}"; g++-14 -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "$bin" "$1" && shift && time ./"$bin" "$@" && rm ./"$bin"; }; f'
+# Detect newest g++ (prefer homebrew versioned, fallback to system g++)
+CPP_COMPILER=g++
+for v in 20 19 18 17 16 15 14 13 12 11; do
+    if command -v "g++-$v" &>/dev/null; then
+        CPP_COMPILER="g++-$v"
+        break
+    fi
+done
+
+# Compile and run a C++ file (binary is removed after run)
+alias compile='f() { "$CPP_COMPILER" -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "${1%.*}" "$1"; }; f'
+alias run='f() { bin="${1%.*}"; "$CPP_COMPILER" -std=c++17 -O2 -Wall -Wextra -Wshadow -Wconversion -Wno-sign-conversion -o "$bin" "$1" && shift && time ./"$bin" "$@" && rm ./"$bin"; }; f'
 
 fpath+=(~/.zsh/completions)
 autoload -U compinit && compinit
